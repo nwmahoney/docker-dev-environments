@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+function main {
+  local main_dotfiles="/home/nick/workspace/github.com/nwmahoney/dotfiles"
+  local build_context_dotfiles="/home/nick/workspace/github.com/nwmahoney/custom-archlinux-docker/dotfiles"
+
+  local zsh_theme_dir="home/oh-my-zsh/custom/themes"
+  mkdir -p "$build_context_dotfiles/$zsh_theme_dir"
+  cp "$main_dotfiles/$zsh_theme_dir/pygmalion.zsh-theme" "$build_context_dotfiles/$zsh_theme_dir/pygmalion.zsh-theme"
+
+  local nvim_config_dir="home/config/nvim"
+  mkdir -p "$build_context_dotfiles/$nvim_config_dir"
+  cp "$main_dotfiles/$nvim_config_dir/init.vim" "$build_context_dotfiles/$nvim_config_dir/init.vim"
+
+  local vim_templates_dir="home/vim/templates"
+  mkdir -p "$build_context_dotfiles/$vim_templates_dir"
+  cp "$main_dotfiles/$vim_templates_dir/skeleton.sh" "$build_context_dotfiles/$vim_templates_dir/skeleton.sh"
+
+  cp "$main_dotfiles/home/zsh_aliases" "$build_context_dotfiles/home/zsh_aliases"
+  cp "$main_dotfiles/home/zshrc" "$build_context_dotfiles/home/zshrc"
+}
+
+main "$@"

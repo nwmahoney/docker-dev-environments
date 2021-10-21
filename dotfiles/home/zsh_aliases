@@ -1,0 +1,31 @@
+alias vim=nvim
+alias vimdiff='nvim -d'
+# alias remove_orphaned_packages="sudo pacman -Rns $(pacman -Qtdq)"
+alias ll="ls -Alh"
+alias l="ls -A1"
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -o -selection clipboard'
+alias restart_wifi='systemctl restart NetworkManager.service'
+alias mv_downloads_here="mv $HOME/Downloads/* ."
+alias pacman_update='sudo pacman -Syyu'
+alias yay_update='yay -Syyu'
+alias update_mirrorlist="curl -s 'https://www.archlinux.org/mirrorlist/?country=US&protocol=https&use_mirror_status=on' | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -n 5 -"
+alias update_mirrorlist_and_packages="curl -s 'https://www.archlinux.org/mirrorlist/?country=US&protocol=https&use_mirror_status=on' | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -n 5 - && sudo pacman -Syyu"
+alias manjaro_update_mirrorlist_and_packages='sudo pacman-mirrors --fasttrack && sudo pacman -Syyu'
+alias manjaro_update_mirrorlist='sudo pacman-mirrors --fasttrack'
+alias dot="cd $HOME/workspace/github.com/nwmahoney/dotfiles"
+alias dot_config="cd $HOME/workspace/github.com/nwmahoney/dotfiles/home/config"
+alias edit_i3_config="nvim $HOME/workspace/github.com/nwmahoney/dotfiles/home/config/i3/config"
+alias ei3='edit_i3_config'
+alias nwm_github_repos="cd $HOME/workspace/github.com/nwmahoney"
+alias nwm="cd $HOME/workspace/github.com/nwmahoney"
+# alias rerun_and_copy_output="!! | pbcopy"
+alias reload="source $HOME/.zshrc"
+alias run_arch_linux_docker='docker run -it archlinux'
+alias nwm_aliases='nvim /home/nick/workspace/dotfiles/home/zsh_aliases'
+alias konch='cd /home/nick/workspace/konch && make run'
+alias enable_monitor='xrandr --output DP-1 --scale 2x2 --mode 2560x1440 --fb 5120x4680 --pos 0x0'
+alias enable_laptop_screen_under_monitor='xrandr --output eDP-1 --scale 1x1 --mode 3200x1800 --pos 960x2880'
+alias disable_monitor='xrandr --output DP-1 --off'
+alias disable_laptop_screen='xrandr --output eDP-1 --off'
+alias nwm_displays_monitor_only='xrandr --output DP-1 --mode 2560x1440 --output eDP-1 --off'

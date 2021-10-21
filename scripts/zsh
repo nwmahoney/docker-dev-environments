@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -exu -o pipefail
+
+function main {
+  sudo docker-compose run --rm zsh
+}
+
+main "$@"

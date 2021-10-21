@@ -1,0 +1,180 @@
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="$HOME/bin:$HOME/go/bin:/usr/local/concourse/bin:$PATH"
+
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="pygmalion"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+	docker
+	git
+	ripgrep
+	themes
+	virtualenv
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# show activated python virtual environment in zsh prompt
+export VIRTUAL_ENV_DISABLE_PROMPT=
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+if [ -f "$HOME/.zsh_aliases" ]; then
+	source "$HOME/.zsh_aliases"
+fi
+
+if [ -f /usr/share/nvm/init-nvm.sh ]; then
+  source /usr/share/nvm/init-nvm.sh
+fi
+
+# aws plugin should handle this but it didn't for some reason
+if [ -f /usr/bin/aws_zsh_completer.sh ]; then
+  source /usr/bin/aws_zsh_completer.sh
+fi
+
+# let's move functions to another file when we have time
+
+function op_signin_personal() {
+  eval "$(op signin my)"
+}
+
+function set_aws_personal_creds() {
+  export AWS_ACCESS_KEY_ID="$(op get item 'AWS Administrator' --account='my' --vault='Personal' | jq -r '.details.sections[] | select(.title == "Access Keys") | .fields[] | select(.t == "Access Key ID") | .v')"
+  export AWS_SECRET_ACCESS_KEY="$(op get item 'AWS Administrator' --account='my' --vault='Personal' | jq -r '.details.sections[] | select(.title == "Access Keys") | .fields[] | select(.t == "Secret Access Key") | .v')"
+}
+
+function render_markdown_and_open_in_firefox() {
+  local markdown_filepath
+  local html_filepath
+
+  markdown_filepath=${1:?'Usage: render_markdown_and_open_in_firefox <input_markdown_filepath>'}
+  html_filepath='/tmp/rendered_markdown.html'
+
+  # Render the Markdown into HTML
+  md2html --output="${html_filepath}" "${markdown_filepath}"
+
+  # Open the rendered HTML in Firefox
+  firefox "${html_filepath}"
+}
+
+function set_timer() {
+  local time_string
+  local notification_summary
+  local notification_body
+
+  time_string="${1:?'Usage: set_timer <time_string> [<notification_summary> [<notification_message_body>]]'}"
+  notification_summary="${2:-"time's up!"}"
+  notification_body="${3:-"${time_string}"}"
+
+  sleep "${time_string}"
+  notify-send --urgency='critical' "${notification_summary}" "${notification_body}"
+}
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# pacman said to put this in here when i installed the fasd package
+eval "$(fasd --init auto)"
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/terraform terraform
+
+# from `https://wiki.archlinux.org/title/Fzf`
+if [ -f /usr/share/fzf/key-bindings.zsh ]; then
+  source /usr/share/fzf/key-bindings.zsh
+elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+	source /usr/share/doc/fzf/examples/key-bindings.zsh
+fi
+if [ -f /usr/share/fzf/completion.zsh ]; then
+  source /usr/share/fzf/completion.zsh
+elif [ -f /usr/share/doc/fzf/examples/completion.zsh ]; then
+	source /usr/share/doc/fzf/examples/completion.zsh
+fi

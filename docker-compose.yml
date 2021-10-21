@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  zsh:
+    build: .
+    container_name: nwm-archlinux
+    volumes:
+      - ./shared-dir:/home/nick/shared-dir
