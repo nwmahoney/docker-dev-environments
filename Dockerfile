@@ -6,20 +6,24 @@ LABEL authors="Nick Mahoney <nick.mahoney00@gmail.com>"
 
 # install packages (and upgrade existing packages)
 RUN pacman --noconfirm -Syu \
-      which \
-      sudo \
+      base-devel \
       man-db \
       man-pages \
-      texinfo \
       pkgfile \
       neovim \
       zsh \
       zsh-completions \
       git \
       tree \
+      xclip \
       ripgrep \
       fasd \
-      xclip \
+      fd \
+      nodejs \
+      yarn \
+      python \
+      python-pip \
+      ruby \
       bat
 
 # sync the pkgfile database
@@ -57,5 +61,8 @@ RUN mkdir -p /home/nick/.vim/templates
 COPY --chown=nick dotfiles/home/vim/templates/skeleton.sh \
        /home/nick/.vim/templates/skeleton.sh
 RUN nvim --headless +'PlugInstall --sync' +qa
+RUN python3 -m pip install --user --upgrade pynvim
+RUN gem install --user neovim
+RUN yarn global add neovim
 
 CMD ["zsh"]
