@@ -41,19 +41,19 @@ WORKDIR /home/nick
 # setup zsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 RUN mkdir -p /home/nick/.oh-my-zsh/custom/themes
-COPY dotfiles/home/oh-my-zsh/custom/themes/pygmalion.zsh-theme \
+COPY --chown=nick dotfiles/home/oh-my-zsh/custom/themes/pygmalion.zsh-theme \
        /home/nick/.oh-my-zsh/custom/themes/pygmalion.zsh-theme
-COPY dotfiles/home/zsh_aliases \
+COPY --chown=nick dotfiles/home/zsh_aliases \
        /home/nick/.zsh_aliases
-COPY dotfiles/home/zshrc \
+COPY --chown=nick dotfiles/home/zshrc \
        /home/nick/.zshrc
 
 # setup neovim
 RUN mkdir -p /home/nick/.config/nvim
-COPY dotfiles/home/config/nvim/init.vim \
+COPY --chown=nick dotfiles/home/config/nvim/init.vim \
        /home/nick/.config/nvim/init.vim
 RUN mkdir -p /home/nick/.vim/templates
-COPY dotfiles/home/vim/templates/skeleton.sh \
+COPY --chown=nick dotfiles/home/vim/templates/skeleton.sh \
        /home/nick/.vim/templates/skeleton.sh
 RUN nvim --headless +'PlugInstall --sync' +qa
 
