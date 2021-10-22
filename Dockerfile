@@ -19,6 +19,7 @@ RUN pacman --noconfirm -Syu \
       tree \
       ripgrep \
       fasd \
+      xclip \
       bat
 
 # sync the pkgfile database

@@ -6,3 +6,6 @@ services:
     container_name: nwm-archlinux
     volumes:
       - ./shared-dir:/home/nick/shared-dir
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      DISPLAY:
