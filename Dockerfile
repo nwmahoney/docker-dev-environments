@@ -21,9 +21,12 @@ RUN pacman --noconfirm -Syu \
       fd \
       nodejs \
       yarn \
+      npm \
       python \
       python-pip \
       ruby \
+      rust \
+      openssh \
       bat
 
 # sync the pkgfile database
@@ -53,16 +56,10 @@ COPY --chown=nick dotfiles/home/zsh_aliases \
 COPY --chown=nick dotfiles/home/zshrc \
        /home/nick/.zshrc
 
-# setup neovim
-RUN mkdir -p /home/nick/.config/nvim
-COPY --chown=nick dotfiles/home/config/nvim/init.vim \
-       /home/nick/.config/nvim/init.vim
-RUN mkdir -p /home/nick/.vim/templates
-COPY --chown=nick dotfiles/home/vim/templates/skeleton.sh \
-       /home/nick/.vim/templates/skeleton.sh
-RUN nvim --headless +'PlugInstall --sync' +qa
+# setup lunarvim
 RUN python3 -m pip install --user --upgrade pynvim
 RUN gem install --user neovim
 RUN yarn global add neovim
+RUN yes | LV_BRANCH=rolling bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh)
 
 CMD ["zsh"]
