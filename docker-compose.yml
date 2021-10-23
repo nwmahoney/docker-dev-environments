@@ -7,5 +7,6 @@ services:
     volumes:
       - ./shared-dir:/home/nick/shared-dir
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - /home/nick/.ssh:/home/nick/.ssh:ro
     environment:
       DISPLAY:
