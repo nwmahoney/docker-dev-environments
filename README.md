@@ -9,3 +9,5 @@ cd nerd-fonts
 git sparse-checkout add patched-fonts/DejaVuSansMono
 ./install DejaVuSansMono
 ```
+
+  - alternatively, check out [this repo for installing nerd fonts](https://github.com/ronniedroid/getnf)
