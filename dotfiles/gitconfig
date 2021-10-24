@@ -1,0 +1,29 @@
+[user]
+	email = nick.mahoney00@gmail.com
+	name = Nick Mahoney
+
+[core]
+	editor = nvim
+
+[alias]
+	co = checkout
+	ci = commit
+	br = branch
+	st = status
+	unstage = reset HEAD --
+	last = !git --no-pager log -1 HEAD
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+	lol = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	lg = !git --no-pager log --graph --decorate --pretty=oneline --abbrev-commit --all
+
+[pager]
+	diff = delta
+	log = delta
+	reflog = delta
+	show = delta
+
+[interactive]
+	diffFilter = delta --color-only --features=interactive
+
+[delta]
+	side-by-side = true

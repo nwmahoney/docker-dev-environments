@@ -27,7 +27,8 @@ RUN pacman --noconfirm -Syu \
       ruby \
       rust \
       openssh \
-      bat
+      bat \
+      git-delta
 
 # sync the pkgfile database
 RUN pkgfile --update
@@ -70,5 +71,9 @@ RUN python3 -m pip install --user --upgrade pynvim
 RUN gem install --user neovim
 RUN yarn global add neovim
 RUN yes | LV_BRANCH=rolling bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh)
+
+# setup git
+COPY --chown=nick dotfiles/gitconfig \
+       /home/nick/.gitconfig
 
 CMD ["zsh"]
