@@ -56,6 +56,15 @@ COPY --chown=nick dotfiles/home/zsh_aliases \
 COPY --chown=nick dotfiles/home/zshrc \
        /home/nick/.zshrc
 
+# setup neovim
+RUN mkdir -p /home/nick/.config/nvim
+COPY --chown=nick dotfiles/home/config/nvim/init.vim \
+       /home/nick/.config/nvim/init.vim
+RUN mkdir -p /home/nick/.vim/templates
+COPY --chown=nick dotfiles/home/vim/templates/skeleton.sh \
+       /home/nick/.vim/templates/skeleton.sh
+RUN nvim --headless +'PlugInstall --sync' +qa
+
 # setup lunarvim
 RUN python3 -m pip install --user --upgrade pynvim
 RUN gem install --user neovim
