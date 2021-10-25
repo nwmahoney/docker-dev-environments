@@ -136,6 +136,9 @@ nnoremap <Leader>` :call ToggleBackgroundColor()<CR>
 " <Leader>r reloads my nvim configuration
 nnoremap <Leader>v :source ~/.config/nvim/init.vim<CR>:runtime! plugin/**/*.vim<CR>
 
+" automatically run `:RustFmt` when saving a buffer
+let g:rustfmt_autosave = 1
+
 " <Leader>, clears search highlighting
 nnoremap <Leader>, :nohlsearch<CR>
 
