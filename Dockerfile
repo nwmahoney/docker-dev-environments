@@ -28,7 +28,8 @@ RUN pacman --noconfirm -Syu \
       rust \
       openssh \
       bat \
-      git-delta
+      git-delta \
+      firefox
 
 # sync the pkgfile database
 RUN pkgfile --update
