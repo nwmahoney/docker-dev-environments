@@ -25,7 +25,6 @@ RUN pacman --noconfirm -Syu \
       python \
       python-pip \
       ruby \
-      rust \
       openssh \
       bat \
       git-delta \
@@ -75,5 +74,9 @@ RUN nvim --headless +'PlugInstall --sync' +qa
 # setup git
 COPY --chown=nick dotfiles/gitconfig \
        /home/nick/.gitconfig
+
+# setup rust for development
+# (rust pacman package should be fine if not using rust for development)
+RUN sh <(curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf) -y
 
 CMD ["zsh"]
