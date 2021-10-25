@@ -56,7 +56,7 @@ Plug 'sbdchd/neoformat'
 Plug 'joshdick/onedark.vim'
 
 " generate and manage ctags
-Plug 'ludovicchabant/vim-gutentags'
+" Plug 'ludovicchabant/vim-gutentags'
 
 " fuzzy finding
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
