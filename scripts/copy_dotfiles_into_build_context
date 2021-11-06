@@ -3,23 +3,29 @@
 set -eu -o pipefail
 
 function main {
-  local main_dotfiles="/home/nick/workspace/github.com/nwmahoney/dotfiles"
-  local build_context_dotfiles="/home/nick/workspace/github.com/nwmahoney/docker-dev-environments/dotfiles"
+  # I am switching from `old_dotfiles` to `new_dotfiles` incrementally.
+  local old_dotfiles="/home/nick/workspace/github.com/nwmahoney/dotfiles"
+  local new_dotfiles="/home/nick/.dotfiles"
+  local build_context_old_dotfiles="/home/nick/workspace/github.com/nwmahoney/docker-dev-environments/dotfiles"
+  local build_context_new_dotfiles="/home/nick/workspace/github.com/nwmahoney/docker-dev-environments/.dotfiles"
 
   local zsh_theme_dir="home/oh-my-zsh/custom/themes"
-  mkdir -p "$build_context_dotfiles/$zsh_theme_dir"
-  cp "$main_dotfiles/$zsh_theme_dir/pygmalion.zsh-theme" "$build_context_dotfiles/$zsh_theme_dir/pygmalion.zsh-theme"
+  mkdir -p "$build_context_old_dotfiles/$zsh_theme_dir"
+  cp "$old_dotfiles/$zsh_theme_dir/pygmalion.zsh-theme" "$build_context_old_dotfiles/$zsh_theme_dir/pygmalion.zsh-theme"
 
-  local nvim_config_dir="home/config/nvim"
-  mkdir -p "$build_context_dotfiles/$nvim_config_dir"
-  cp "$main_dotfiles/$nvim_config_dir/init.vim" "$build_context_dotfiles/$nvim_config_dir/init.vim"
+  local old_nvim_config_dir="home/config/nvim"
+  mkdir -p "$build_context_old_dotfiles/$old_nvim_config_dir"
+  cp "$old_dotfiles/$old_nvim_config_dir/init.vim" "$build_context_old_dotfiles/$old_nvim_config_dir/init.vim"
+  local new_nvim_config_dir="nvim/.config/nvim"
+  mkdir -p "$build_context_new_dotfiles/$new_nvim_config_dir"
+  cp -r "$new_dotfiles/$new_nvim_config_dir/plugin" "$build_context_new_dotfiles/$new_nvim_config_dir"
 
   local vim_templates_dir="home/vim/templates"
-  mkdir -p "$build_context_dotfiles/$vim_templates_dir"
-  cp "$main_dotfiles/$vim_templates_dir/skeleton.sh" "$build_context_dotfiles/$vim_templates_dir/skeleton.sh"
+  mkdir -p "$build_context_old_dotfiles/$vim_templates_dir"
+  cp "$old_dotfiles/$vim_templates_dir/skeleton.sh" "$build_context_old_dotfiles/$vim_templates_dir/skeleton.sh"
 
-  cp "$main_dotfiles/home/zsh_aliases" "$build_context_dotfiles/home/zsh_aliases"
-  cp "$main_dotfiles/home/zshrc" "$build_context_dotfiles/home/zshrc"
+  cp "$old_dotfiles/home/zsh_aliases" "$build_context_old_dotfiles/home/zsh_aliases"
+  cp "$old_dotfiles/home/zshrc" "$build_context_old_dotfiles/home/zshrc"
 }
 
 main "$@"

@@ -59,12 +59,16 @@ COPY --chown=nick dotfiles/home/zshrc \
        /home/nick/.zshrc
 
 # setup neovim
+# old dotfiles
 RUN mkdir -p /home/nick/.config/nvim
 COPY --chown=nick dotfiles/home/config/nvim/init.vim \
        /home/nick/.config/nvim/init.vim
 RUN mkdir -p /home/nick/.vim/templates
 COPY --chown=nick dotfiles/home/vim/templates/skeleton.sh \
        /home/nick/.vim/templates/skeleton.sh
+# new dotfiles
+COPY --chown=nick .dotfiles /home/nick/.dotfiles
+RUN cd ~/.dotfiles && stow nvim
 RUN nvim --headless +'PlugInstall --sync' +qa
 
 # setup git

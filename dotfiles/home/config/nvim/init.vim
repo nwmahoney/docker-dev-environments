@@ -1,43 +1,5 @@
-set tabstop=4 softtabstop=4
-set shiftwidth=4
-set expandtab
-set smartindent
-
-set mouse=a
-
-set relativenumber
-set nu
-
-set hidden
-
-set nowrap
-
-set noswapfile
-set nobackup
-set undodir=~/.vim/undodir
-set undofile
-
-set incsearch
-
-set termguicolors
-
-set scrolloff=8
-
-set completeopt=menuone,noinsert,noselect
-
-set signcolumn=yes
-set colorcolumn=80
-
-" Give more space for displaying messages
-set cmdheight=2
-
-" Primeagen had this one. Sounds nice but don't really know what
-" it does.
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience
-" set updatetime=50
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Install plugins.
 
 " install vim-plug if it is not already installed
 if empty(glob('~/.local/share/nvim/plugged'))
@@ -46,32 +8,45 @@ if empty(glob('~/.local/share/nvim/plugged'))
 endif
 
 call plug#begin('~/.local/share/nvim/plugged')
+
+" Telescope
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'gruvbox-community/gruvbox'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
-" LSP (neovim-lsp?)
+" Colorschemes.
+Plug 'lifepillar/vim-solarized8'
+Plug 'gruvbox-community/gruvbox'
+Plug 'arcticicestudio/nord-vim'
+Plug 'joshdick/onedark.vim'
+
 Plug 'neovim/nvim-lspconfig'
+" LSP. I set this up pretty quickly. It would probably be worth going back
+" over this.
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
-" diagnostics?
 
+" A game for practicing Vim movements.
+Plug 'ThePrimeagen/vim-be-good'
+
+" Probably want all three of these.
 " treesitter
 " undotree
-" fugediff tpope
+" fugitive
 
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ------------------------------------------------------------------------------
 " copied from my old vimrc
 " TODO: clean this up!
 
 " some defaults i expect
 " Plug 'tpope/vim-sensible'
 
+" Can I get this functionality through the LSP plugins?
 " comment stuff out (e.g. `gc` to comment out higlighted lines)
 Plug 'tpope/vim-commentary'
 
@@ -114,171 +89,19 @@ Plug 'tpope/vim-vinegar'
 " (onedark is in here but a bit broken)
 " Plug 'flazz/vim-colorschemes'
 " Plug 'chriskempson/base16-vim'
-" Plug 'joshdick/onedark.vim'
-Plug 'lifepillar/vim-solarized8'
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ------------------------------------------------------------------------------
+
+
 
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set background=light
-colorscheme solarized8
 
-" let g:onedark_terminal_italics=1
-" colorscheme onedark
-
-" let g:gruvbox_italics=1
-" colorscheme gruvbox
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-lua << EOF
---------------------------------------------------------------------------------
--- copied from https://github.com/williamboman/nvim-lsp-installer#setup
-
-local lsp_installer = require("nvim-lsp-installer")
-
-lsp_installer.on_server_ready(function(server)
-    local opts = {}
-
-    -- (optional) Customize the options passed to the server
-    -- if server.name == "tsserver" then
-    --     opts.root_dir = function() ... end
-    -- end
-
-    -- This setup() function is exactly the same as lspconfig's setup function (:help lspconfig-quickstart)
-    server:setup()
-    vim.cmd [[ do User LspAttachBuffers ]]
-end)
-
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
--- copied from https://github.com/neovim/nvim-lspconfig
-
-local nvim_lsp = require('lspconfig')
-
--- -- Use an on_attach function to only map the following keys
--- -- after the language server attaches to the current buffer
--- local on_attach = function(client, bufnr)
---   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
---   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
---
---   -- Enable completion triggered by <c-x><c-o>
---   -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
---
---   -- Mappings.
---   local opts = { noremap=true, silent=true }
---
---   -- See `:help vim.lsp.*` for documentation on any of the below functions
---   -- buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
---   buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
---   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
---   -- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
---   -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
---   -- buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
---   -- buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
---   -- buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
---   -- buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
---   -- buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
---   -- buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
---   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
---   buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
---   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
---   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
---   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
---   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
---
--- end
-
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
--- copied from https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
-
--- Add additional capabilities supported by nvim-cmp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-
--- Enable some language servers with the additional completion capabilities offered by nvim-cmp
--- local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver' }
-local servers = { 'elmls' }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
-    on_attach = on_attach,
-    flags = {
-        debounce_text_changes = 150,
-    },
-    capabilities = capabilities,
-  }
-end
--- require'lspconfig'.elmls.setup {
---     on_attach = on_attach,
---     flags = {
---         debounce_text_changes = 150,
---     },
---     capabilities = capabilities
--- }
-
--- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect,noinsert'
-
--- luasnip setup
-local luasnip = require 'luasnip'
-
--- nvim-cmp setup
-local cmp = require 'cmp'
-cmp.setup {
-  snippet = {
-    expand = function(args)
-      require('luasnip').lsp_expand(args.body)
-    end,
-  },
-  mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    ['<Tab>'] = function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end,
-    ['<S-Tab>'] = function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end,
-  },
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-  },
-}
-
---------------------------------------------------------------------------------
-
--- I think I don't need this because of lsp_installer, but not totally sure.
--- require'lspconfig'.elmls.setup{}
-EOF
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Remaps.
 
 let mapleader = " "
 
@@ -298,13 +121,25 @@ nnoremap <Leader>d :edit /home/nick/workspace/github.com/nwmahoney/dotfiles<CR>
 " <Leader>v opens my nvim configuration
 nnoremap <Leader>c :edit $MYVIMRC<CR>
 
+" <Leader>` toggles between light and dark backgrounds.
+function ToggleBackgroundColor()
+  if &background ==# "dark"
+    !sed -i -- 's/^set background=dark$/set background=light/' ~/.config/nvim/plugin/colorscheme.vim
+    set background=light
+  else
+    !sed -i -- 's/^set background=light$/set background=dark/' ~/.config/nvim/plugin/colorscheme.vim
+    set background=dark
+  endif
+endfun
+nnoremap <Leader>` :call ToggleBackgroundColor()<CR>
+
 " <Leader>r reloads my nvim configuration
-nnoremap <Leader>v :source ~/.config/nvim/init.vim<CR>
+nnoremap <Leader>v :source ~/.config/nvim/init.vim<CR>:runtime! plugin/**/*.vim<CR>
 
 " <Leader>, clears search highlighting
 nnoremap <Leader>, :nohlsearch<CR>
 
-nnoremap <Leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})<CR>
+" LSP.
 nnoremap <Leader>d :lua vim.lsp.buf.definition()<CR>
 nnoremap <Leader>h :lua vim.lsp.buf.hover()<CR>
 nnoremap <Leader>r :lua vim.lsp.buf.rename()<CR>
@@ -312,7 +147,49 @@ nnoremap <Leader>f :lua vim.lsp.buf.formatting()<CR>
 nnoremap <Leader>[ :lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <Leader>] :lua vim.lsp.diagnostic.goto_next()<CR>
 
+" Telescope
+nnoremap <Leader><Space> :lua require("telescope.builtin").find_files({ hidden = true })<CR>
+nnoremap <Leader>/ :lua require("telescope.builtin").live_grep()<CR>
+" This next one came from that Primeagen video. `Project Search`. The tradeoff
+" compared to the above `live_grep` is that the grep doesn't live update as
+" you type the pattern, but you get to fuzzy find on the filenames containing
+" the pattern.
+nnoremap <Leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ") })<CR>
+nnoremap <Leader>* :lua require('telescope.builtin').grep_string()<CR>
+nnoremap <Leader>e :lua require('telescope.builtin').file_browser({ hidden = true })<CR>
+" TODO: Install `nvim-treesitter`. See `:help builtin.treesitter()`.
+nnoremap <Leader>tt :lua require('telescope.builtin').treesitter()<CR>
+" TODO: Checkout other Telescope Git Builtins. Documentation should be easy to
+" find near `:help builtin.git_status`.
+nnoremap <Leader>gs :lua require('telescope.builtin').git_status()<CR>
+nnoremap <Leader>tc :lua require('telescope.builtin').commands()<CR>
+nnoremap <Leader>th :lua require('telescope.builtin').help_tags()<CR>
+nnoremap <Leader>tm :lua require('telescope.builtin').man_pages()<CR>
+nnoremap <Leader>tb :lua require('telescope.builtin').buffers()<CR>
+nnoremap <Leader>t` :lua require('telescope.builtin').colorscheme()<CR>
+nnoremap <Leader>tk :lua require('telescope.builtin').keymaps()<CR>
+" TODO: Figure this one out. I like the idea of being able to fuzzy find my
+" command history but this needs some polishing.
+" cnoremap <C-p> :lua require('telescope.builtin').command_history()<CR>
+" TODO: Test this one and uncomment once we understand quickfix lists better.
+" nnoremap <Leader>tq :lua require('telescope.builtin').quickfix()<CR>
+" TODO: The following builtin pickers didn't seem to be worth mapping now but seemed
+" intriguing. See `:help builtin.<picker>()`
+" - `marks`
+" - `registers`
+" - `filetypes`
+" - `highlights`
+" - `tagstack`/`jumplist`
+" - `lsp_references`
+"   - Honestly, all of the `lsp_*` builtin pickers seem like they could be
+"     super useful.
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Autocommands.
 
 fun! TrimTrailingWhitespace()
     let l:save = winsaveview()
@@ -330,13 +207,34 @@ augroup NWM
     autocmd BufWritePre *.elm lua vim.lsp.buf.formatting_sync(nil, 1000)
 
     " Autopopulate templates for new files with matching file extensions.
-    " TODO: Can this be improved with "snippets" (whatever those are)?
+    " TODO: Can this be improved with `snippets` (whatever those are)?
     autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh
     autocmd BufNewFile *.rb 0r ~/.vim/templates/skeleton.rb
 augroup END
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " TODO
+"
 " - check out https://github.com/theprimeagen/.dotfiles
 " - check out https://github.com/tjdevries/config_manager/tree/master/xdg_config/nvim/
 " - break out into separate files
 "   - as seen here (22:41): https://www.youtube.com/watch?v=DogKdiRx7ls&t=176s
+" - current movements, commands, etc that I want to get better at using
+"   - f, t, F, T, ';', ','
+"   - s (delete character and enter insert mode - kinda like 'r')
+"   - S (delete line and enter insert mode - kinda like 'C')
+"   - '{', '}' (jump to next/previous empty line
+"   - '%' (jump to matching pair, e.g. '(' -> ')'
+"   - mixing <num> with 'i' (change/delete/etc within layers of nested things
+"     - e.g. d2i{ (delete everything inside the curly braces one level up)
+"   - things like 'cip' (change in paragraph)
+"   - 'a' as alternative to 'i' (includes the matching thing, e.g. '(')
+"   - telescope for opening a different filegit@github.com:nwmahoney/.dotfiles.git
+"   - `ctrl-6` to jump between two files
+"   - `ctrl-]` to follow links and lookup words in `:help`
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

@@ -12,10 +12,13 @@ function main {
   cp "$docker_dev_environments_dir/docker-compose.yml" "$new_project_dir"
   cp "$docker_dev_environments_dir/Dockerfile" "$new_project_dir"
   cp -r "$docker_dev_environments_dir/dotfiles" "$new_project_dir"
+  cp -r "$docker_dev_environments_dir/.dotfiles" "$new_project_dir"
   cp -r "$docker_dev_environments_dir/scripts" "$new_project_dir"
   cp -r "$docker_dev_environments_dir/shared-dir" "$new_project_dir"
 
   rm "$new_project_dir/scripts/new_project"
+
+  # TODO: Change container name in `docker-compose.yml` to `nwm-<project-name>`.
 
   echo "initialized new project '$new_project_name' at '$new_project_dir'"
 }
