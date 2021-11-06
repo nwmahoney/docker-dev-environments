@@ -1,4 +1,4 @@
-custom docker dev environment
+# Docker Dev Environments
 
 - if glyphs aren't rendering in LunarVim, check out [nerd fonts](https://github.com/ryanoasis/nerd-fonts)
   - needs to be installed on host machine. try running the following commands:

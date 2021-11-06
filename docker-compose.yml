@@ -3,7 +3,7 @@ version: "3"
 services:
   zsh:
     build: .
-    container_name: nwm-archlinux
+    container_name: nwm-dev
     volumes:
       - ./shared-dir:/home/nick/shared-dir
       - /tmp/.X11-unix:/tmp/.X11-unix

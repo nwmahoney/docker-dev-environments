@@ -4,7 +4,7 @@ set -eu -o pipefail
 
 function main {
   local main_dotfiles="/home/nick/workspace/github.com/nwmahoney/dotfiles"
-  local build_context_dotfiles="/home/nick/workspace/github.com/nwmahoney/custom-archlinux-docker/dotfiles"
+  local build_context_dotfiles="/home/nick/workspace/github.com/nwmahoney/docker-dev-environments/dotfiles"
 
   local zsh_theme_dir="home/oh-my-zsh/custom/themes"
   mkdir -p "$build_context_dotfiles/$zsh_theme_dir"
