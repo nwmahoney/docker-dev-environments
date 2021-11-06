@@ -67,12 +67,6 @@ COPY --chown=nick dotfiles/home/vim/templates/skeleton.sh \
        /home/nick/.vim/templates/skeleton.sh
 RUN nvim --headless +'PlugInstall --sync' +qa
 
-# setup lunarvim
-RUN python3 -m pip install --user --upgrade pynvim
-RUN gem install --user neovim
-RUN yarn global add neovim
-RUN yes | LV_BRANCH=rolling bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh)
-
 # setup git
 COPY --chown=nick dotfiles/gitconfig \
        /home/nick/.gitconfig
