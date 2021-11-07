@@ -9,7 +9,7 @@ endif
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-" Telescope
+" Telescope.
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
@@ -20,14 +20,30 @@ Plug 'gruvbox-community/gruvbox'
 Plug 'arcticicestudio/nord-vim'
 Plug 'joshdick/onedark.vim'
 
-Plug 'neovim/nvim-lspconfig'
 " LSP. I set this up pretty quickly. It would probably be worth going back
 " over this.
+Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
+
+" Autocompletion. This is pretty tightly coupled with LSP and I'm not sure I
+" have the separation right. E.g. maybe `hrsh7th/cmp-nvim-lsp` goes in the LSP
+" section.
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+" TODO: Learn more about Snippets.
 Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+
+" Git.
+Plug 'tpope/vim-fugitive'
+" TODO: Use `lualine` instead? Or `itchyny/lightline.vim`?
+" Plug 'vim-airline/vim-airline'
+" TODO: Add git indicator to status line. From the README:
+"   Add %{FugitiveStatusline()} to 'statusline' to get an indicator with the
+"   current branch in your statusline.
 
 " A game for practicing Vim movements.
 Plug 'ThePrimeagen/vim-be-good'
@@ -140,14 +156,16 @@ nnoremap <Leader>v :source ~/.config/nvim/init.vim<CR>:runtime! plugin/**/*.vim<
 nnoremap <Leader>, :nohlsearch<CR>
 
 " LSP.
-nnoremap <Leader>d :lua vim.lsp.buf.definition()<CR>
-nnoremap <Leader>h :lua vim.lsp.buf.hover()<CR>
-nnoremap <Leader>r :lua vim.lsp.buf.rename()<CR>
-nnoremap <Leader>f :lua vim.lsp.buf.formatting()<CR>
-nnoremap <Leader>[ :lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <Leader>] :lua vim.lsp.diagnostic.goto_next()<CR>
+" TODO: Delete this section, but also consider moving other plugin-specific
+" maps to the relevant file.
+" nnoremap <Leader>d :lua vim.lsp.buf.definition()<CR>
+" nnoremap <Leader>h :lua vim.lsp.buf.hover()<CR>
+" nnoremap <Leader>r :lua vim.lsp.buf.rename()<CR>
+" nnoremap <Leader>f :lua vim.lsp.buf.formatting()<CR>
+" nnoremap <Leader>[ :lua vim.lsp.diagnostic.goto_prev()<CR>
+" nnoremap <Leader>] :lua vim.lsp.diagnostic.goto_next()<CR>
 
-" Telescope
+" Telescope.
 nnoremap <Leader><Space> :lua require("telescope.builtin").find_files({ hidden = true })<CR>
 nnoremap <Leader>/ :lua require("telescope.builtin").live_grep()<CR>
 " This next one came from that Primeagen video. `Project Search`. The tradeoff
@@ -184,6 +202,12 @@ nnoremap <Leader>tk :lua require('telescope.builtin').keymaps()<CR>
 "   - Honestly, all of the `lsp_*` builtin pickers seem like they could be
 "     super useful.
 
+" Git (`vim-fugitive`).
+nnoremap <Leader>gg :Git<CR>
+nnoremap <Leader>gd :Gvdiffsplit<CR>
+nnoremap <Leader>gh :diffget //2<CR>
+nnoremap <Leader>gl :diffget //3<CR>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
@@ -203,13 +227,16 @@ augroup NWM
     " Trim trailing whitespace on save.
     autocmd BufWritePre * :call TrimTrailingWhitespace()
 
-    " Format Elm code on save.
-    autocmd BufWritePre *.elm lua vim.lsp.buf.formatting_sync(nil, 1000)
+    " Format Javascript code on save.
+    autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 1000)
 
     " Autopopulate templates for new files with matching file extensions.
     " TODO: Can this be improved with `snippets` (whatever those are)?
     autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh
     autocmd BufNewFile *.rb 0r ~/.vim/templates/skeleton.rb
+
+    " Open `:help` in a vertical split.
+    autocmd BufEnter *.txt if &buftype == 'help' | wincmd L | endif
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -221,6 +248,7 @@ augroup END
 "
 " - check out https://github.com/theprimeagen/.dotfiles
 " - check out https://github.com/tjdevries/config_manager/tree/master/xdg_config/nvim/
+" - check out https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
 " - break out into separate files
 "   - as seen here (22:41): https://www.youtube.com/watch?v=DogKdiRx7ls&t=176s
 " - current movements, commands, etc that I want to get better at using

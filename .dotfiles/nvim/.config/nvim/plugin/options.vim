@@ -25,6 +25,8 @@ set incsearch
 
 set termguicolors
 
+set splitright
+
 set scrolloff=8
 
 " These two are maybe a little less obvious feeling than the rest in this
