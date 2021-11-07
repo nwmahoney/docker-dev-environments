@@ -58,6 +58,8 @@ COPY --chown=nick dotfiles/home/zsh_aliases \
        /home/nick/.zsh_aliases
 COPY --chown=nick dotfiles/home/zshrc \
        /home/nick/.zshrc
+COPY --chown=nick dotfiles/home/zshenv \
+       /home/nick/.zshenv
 
 # setup neovim
 # old dotfiles
@@ -73,7 +75,7 @@ RUN cd ~/.dotfiles && stow nvim
 RUN nvim --headless +'PlugInstall --sync' +qa
 
 # setup git
-COPY --chown=nick dotfiles/gitconfig \
+COPY --chown=nick dotfiles/home/gitconfig \
        /home/nick/.gitconfig
 
 CMD ["zsh"]

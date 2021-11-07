@@ -1,0 +1,7 @@
+export PATH="$HOME/bin:$HOME/.local/bin:$HOME/go/bin:/usr/local/concourse/bin:$PATH"
+
+# Allow user-wide `npm` and `yarn` package installation.
+# See the following webpages for more information.
+# - https://wiki.archlinux.org/title/node.js_#Allow_user-wide_installations
+# - https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
+export npm_config_prefix="$HOME/.local"

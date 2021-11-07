@@ -26,6 +26,9 @@ function main {
 
   cp "$old_dotfiles/home/zsh_aliases" "$build_context_old_dotfiles/home/zsh_aliases"
   cp "$old_dotfiles/home/zshrc" "$build_context_old_dotfiles/home/zshrc"
+  cp "$old_dotfiles/home/zshenv" "$build_context_old_dotfiles/home/zshenv"
+
+  cp "$old_dotfiles/home/gitconfig" "$build_context_old_dotfiles/home/gitconfig"
 }
 
 main "$@"
