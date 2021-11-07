@@ -29,7 +29,8 @@ RUN pacman --noconfirm -Syu \
       openssh \
       bat \
       git-delta \
-      firefox
+      firefox \
+      stow
 
 # sync the pkgfile database
 RUN pkgfile --update
