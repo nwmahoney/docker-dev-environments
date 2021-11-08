@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -exu -o pipefail
+
+function main {
+  sudo docker exec -it "$ELM_DEV_CONTAINER_ID" sh -c "source /home/nick/.zshenv && cd $ELM_PROJECT_DIR && elm reactor"
+}
+
+main "$@"

@@ -3,10 +3,13 @@ version: "3"
 services:
   zsh:
     build: .
-    container_name: nwm-dev
+    container_name: elm-dev
     volumes:
       - ./shared-dir:/home/nick/shared-dir
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /home/nick/.ssh:/home/nick/.ssh:ro
+    ports:
+      - 8000:8000
     environment:
       DISPLAY:
+    command: zsh

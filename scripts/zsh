@@ -3,9 +3,7 @@
 set -exu -o pipefail
 
 function main {
-  # I'm not sure if `--rm` actually does anything...
-  sudo docker-compose run --rm zsh
-  # sudo docker-compose run --service-ports zsh
+  sudo docker-compose run --service-ports zsh
 }
 
 main "$@"

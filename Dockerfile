@@ -82,6 +82,20 @@ RUN source /home/nick/.zshenv && npm install -g typescript typescript-language-s
 RUN nvim --headless +'PlugInstall --sync' +qa
 ################################################################################
 
+# setup elm
+RUN source /home/nick/.zshenv && \
+    npm install -g \
+      elm \
+      elm-test \
+      elm-format \
+      @elm-tooling/elm-language-server
+
+# # setup lunarvim
+# RUN python3 -m pip install --user --upgrade pynvim
+# RUN gem install --user neovim
+# RUN yarn global add neovim
+# RUN yes | LV_BRANCH=rolling bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh)
+
 
 # setup git
 COPY --chown=nick dotfiles/home/gitconfig \

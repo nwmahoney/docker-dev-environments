@@ -172,7 +172,7 @@ nnoremap <Leader>/ :lua require("telescope.builtin").live_grep()<CR>
 " compared to the above `live_grep` is that the grep doesn't live update as
 " you type the pattern, but you get to fuzzy find on the filenames containing
 " the pattern.
-nnoremap <Leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ") })<CR>
+nnoremap <Leader>f :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ") })<CR>
 nnoremap <Leader>* :lua require('telescope.builtin').grep_string()<CR>
 nnoremap <Leader>e :lua require('telescope.builtin').file_browser({ hidden = true })<CR>
 " TODO: Install `nvim-treesitter`. See `:help builtin.treesitter()`.
@@ -226,6 +226,9 @@ augroup NWM
 
     " Trim trailing whitespace on save.
     autocmd BufWritePre * :call TrimTrailingWhitespace()
+
+    " Format Elm Code on save.
+    autocmd BufWritePre *.elm lua vim.lsp.buf.formatting_sync(nil, 1000)
 
     " Format Javascript code on save.
     autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 1000)
