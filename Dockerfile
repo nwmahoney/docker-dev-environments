@@ -30,7 +30,8 @@ RUN pacman --noconfirm -Syu \
       bat \
       git-delta \
       firefox \
-      stow
+      stow \
+      elixir
 
 # sync the pkgfile database
 RUN pkgfile --update
