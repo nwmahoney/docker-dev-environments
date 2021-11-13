@@ -4,6 +4,9 @@ LABEL authors="Nick Mahoney <nick.mahoney00@gmail.com>"
 ################################################################################
 # root user
 
+# include man pages
+RUN sed --in-place 's%^\(NoExtract  = usr/share/man/\* usr/share/info/\*\)$%# \1%' /etc/pacman.conf
+
 # install packages (and upgrade existing packages)
 RUN pacman --noconfirm -Syu \
       base-devel \
