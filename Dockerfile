@@ -33,7 +33,10 @@ RUN pacman --noconfirm -Syu \
       bat \
       git-delta \
       firefox \
-      stow
+      stow \
+      erlang \
+      elixir \
+      unzip
 
 # sync the pkgfile database
 RUN pkgfile --update
@@ -79,8 +82,17 @@ COPY --chown=nick dotfiles/home/vim/templates/skeleton.sh \
 COPY --chown=nick .dotfiles /home/nick/.dotfiles
 RUN cd ~/.dotfiles && stow nvim
 
-# Setup LSP
+# Setup Typescript/Javascript LSP.
 RUN source /home/nick/.zshenv && npm install -g typescript typescript-language-server
+
+# Setup Elixir LSP.
+RUN mkdir -p /home/nick/.local/lib/manually-installed/elixir-ls
+WORKDIR /home/nick/.local/lib/manually-installed/elixir-ls
+RUN curl -fLO https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip
+RUN unzip elixir-ls.zip
+RUN chmod +x /home/nick/.local/lib/manually-installed/elixir-ls/language_server.sh
+RUN ln -sf /home/nick/.local/lib/manually-installed/elixir-ls/language_server.sh /home/nick/.local/bin/elixir-ls
+WORKDIR /home/nick
 
 RUN nvim --headless +'PlugInstall --sync' +qa
 ################################################################################

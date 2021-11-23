@@ -80,7 +80,7 @@ Plug 'tpope/vim-vinegar'
 " Plug 'junegunn/gv.vim'
 
 " lazy-loaded support for a bunch of languages
-" Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 
 " view man pages in vim
 " Plug 'vim-utils/vim-man'

@@ -57,4 +57,10 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+nvim_lsp.elixirls.setup{
+  cmd = { "/home/nick/.local/bin/elixir-ls" };
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
 EOF
