@@ -48,10 +48,14 @@ Plug 'tpope/vim-fugitive'
 " A game for practicing Vim movements.
 Plug 'ThePrimeagen/vim-be-good'
 
+" NEOVIM IN THE BROWSER.
+" [Primeagen video](https://www.youtube.com/watch?v=ID_kNcj9cMo)
+" Plug 'glacambre/firenvim'
+
 " Probably want all three of these.
 " treesitter
 " undotree
-" fugitive
+" kyazdani42/nvim-web-devicons
 
 
 
@@ -80,7 +84,7 @@ Plug 'tpope/vim-vinegar'
 " Plug 'junegunn/gv.vim'
 
 " lazy-loaded support for a bunch of languages
-" Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 
 " view man pages in vim
 " Plug 'vim-utils/vim-man'
@@ -153,7 +157,7 @@ nnoremap <Leader>` :call ToggleBackgroundColor()<CR>
 nnoremap <Leader>v :source ~/.config/nvim/init.vim<CR>:runtime! plugin/**/*.vim<CR>
 
 " <Leader>, clears search highlighting
-nnoremap <Leader>, :nohlsearch<CR>
+" nnoremap <Leader>, :nohlsearch<CR>
 
 " LSP.
 " TODO: Delete this section, but also consider moving other plugin-specific
@@ -166,13 +170,16 @@ nnoremap <Leader>, :nohlsearch<CR>
 " nnoremap <Leader>] :lua vim.lsp.diagnostic.goto_next()<CR>
 
 " Telescope.
-nnoremap <Leader><Space> :lua require("telescope.builtin").find_files({ hidden = true })<CR>
+nnoremap <Leader><Space> :lua require("telescope.builtin").find_files({ hidden = true, follow = true })<CR>
+" TODO: Make this follow links? `rg` takes a `--follow` flag, and `live_grep()`
+" takes an `additional_args` function that returns additional args, but I'm not
+" sure how to write Lua functions.
 nnoremap <Leader>/ :lua require("telescope.builtin").live_grep()<CR>
 " This next one came from that Primeagen video. `Project Search`. The tradeoff
 " compared to the above `live_grep` is that the grep doesn't live update as
 " you type the pattern, but you get to fuzzy find on the filenames containing
 " the pattern.
-nnoremap <Leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ") })<CR>
+nnoremap <Leader>f :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ") })<CR>
 nnoremap <Leader>* :lua require('telescope.builtin').grep_string()<CR>
 nnoremap <Leader>e :lua require('telescope.builtin').file_browser({ hidden = true })<CR>
 " TODO: Install `nvim-treesitter`. See `:help builtin.treesitter()`.
@@ -186,6 +193,9 @@ nnoremap <Leader>tm :lua require('telescope.builtin').man_pages()<CR>
 nnoremap <Leader>tb :lua require('telescope.builtin').buffers()<CR>
 nnoremap <Leader>t` :lua require('telescope.builtin').colorscheme()<CR>
 nnoremap <Leader>tk :lua require('telescope.builtin').keymaps()<CR>
+" TODO: It could be nice if this was just for the current window, but that
+" doesn't seem to work for Telescope.
+nnoremap <Leader>td :cd %:p:h<CR>
 " TODO: Figure this one out. I like the idea of being able to fuzzy find my
 " command history but this needs some polishing.
 " cnoremap <C-p> :lua require('telescope.builtin').command_history()<CR>
@@ -230,6 +240,10 @@ augroup NWM
     " Format Javascript code on save.
     autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 1000)
 
+    " Format Elixir code on save.
+    autocmd BufWritePre *.ex lua vim.lsp.buf.formatting_sync(nil, 1000)
+    autocmd BufWritePre *.exs lua vim.lsp.buf.formatting_sync(nil, 1000)
+
     " Autopopulate templates for new files with matching file extensions.
     " TODO: Can this be improved with `snippets` (whatever those are)?
     autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh
@@ -247,6 +261,8 @@ augroup END
 " TODO
 "
 " - check out https://github.com/theprimeagen/.dotfiles
+"   - There should be something in here about searching dotfiles using
+"     Telescope. Let's copy that.
 " - check out https://github.com/tjdevries/config_manager/tree/master/xdg_config/nvim/
 " - check out https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
 " - break out into separate files
@@ -264,5 +280,6 @@ augroup END
 "   - telescope for opening a different filegit@github.com:nwmahoney/.dotfiles.git
 "   - `ctrl-6` to jump between two files
 "   - `ctrl-]` to follow links and lookup words in `:help`
+"   - quickfix lists
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

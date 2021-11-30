@@ -27,7 +27,7 @@ lua <<EOF
           elseif luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
           else
-            cmp.complete()
+            fallback()
           end
         else
           fallback()
@@ -41,7 +41,7 @@ lua <<EOF
           elseif luasnip.jumpable(-1) then
             luasnip.jump(-1)
           else
-            cmp.complete()
+            fallback()
           end
         else
           fallback()
@@ -54,7 +54,7 @@ lua <<EOF
       }),
       ['<CR>'] = cmp.mapping.confirm({
         behavior = cmp.ConfirmBehavior.Replace,
-        select = true
+        select = false
       }),
     },
     sources = cmp.config.sources({
