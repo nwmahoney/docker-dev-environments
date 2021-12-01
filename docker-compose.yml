@@ -2,7 +2,8 @@ version: "3"
 
 services:
   zsh:
-    build: .
+    # build: .
+    image: nmahoney/dev
     container_name: nwm-dev
     volumes:
       - ./shared-dir:/home/nick/shared-dir

@@ -1,0 +1,108 @@
+resources:
+- name: git-repo
+  type: git
+  source:
+    uri: git@github.com:nwmahoney/docker-dev-environments.git
+    branch: main
+    private_key: ((private-key))
+    private_key_passphrase: ((private-key-passphrase))
+
+- name: upstream-archlinux-image
+  type: registry-image
+  source:
+    repository: archlinux
+    tag: latest
+
+- name: my-archlinux-image
+  type: registry-image
+  source:
+    repository: nmahoney/archlinux
+    tag: latest
+    username: nmahoney
+    password: ((docker-password))
+
+- name: dev-image
+  type: registry-image
+  source:
+    repository: nmahoney/dev
+    tag: latest
+    username: nmahoney
+    password: ((docker-password))
+
+jobs:
+- name: build-and-push-archlinux-image
+  plan:
+  - in_parallel:
+    - get: git-repo
+      trigger: true
+
+    - get: upstream-archlinux-image
+      trigger: true
+      params:
+        skip_download: true
+
+  # note: this task config could be pushed into `my-image-src` and loaded using
+  # `file:` instead
+  - task: build-archlinux-image
+    privileged: true
+    config:
+      platform: linux
+
+      image_resource:
+        type: registry-image
+        source:
+          repository: concourse/oci-build-task
+
+      params:
+        CONTEXT: images/archlinux
+
+      inputs:
+      - name: git-repo
+        path: .
+
+      outputs:
+      - name: image
+
+      run:
+        path: build
+
+  - put: my-archlinux-image
+    params:
+      image: image/image.tar
+
+- name: build-and-push-dev-image
+  plan:
+  - in_parallel:
+    - get: git-repo
+      trigger: true
+
+    - get: my-archlinux-image
+      trigger: true
+      params:
+        skip_download: true
+
+  # note: this task config could be pushed into `my-image-src` and loaded using
+  # `file:` instead
+  - task: build-dev-image
+    privileged: true
+    config:
+      platform: linux
+
+      image_resource:
+        type: registry-image
+        source:
+          repository: concourse/oci-build-task
+
+      inputs:
+      - name: git-repo
+        path: .
+
+      outputs:
+      - name: image
+
+      run:
+        path: build
+
+  - put: dev-image
+    params:
+      image: image/image.tar
