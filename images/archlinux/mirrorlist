@@ -1,0 +1,16 @@
+Server = http://mirror.lty.me/archlinux/$repo/os/$arch
+Server = https://mirrors.kamey.tk/archlinux/$repo/os/$arch
+Server = https://mirror.sergal.org/archlinux/$repo/os/$arch
+Server = http://mirror.sergal.org/archlinux/$repo/os/$arch
+Server = http://archlinux.mirror.pcextreme.nl/$repo/os/$arch
+Server = http://mirror.cyberbits.eu/archlinux/$repo/os/$arch
+Server = https://archlinux.mailtunnel.eu/$repo/os/$arch
+Server = http://mirror.smith.geek.nz/archlinux/$repo/os/$arch
+Server = https://arch.mirror.jsc.mx/$repo/os/$arch
+Server = http://mirror.archlinux.cl/$repo/os/$arch
+Server = http://arch.mirror.constant.com/$repo/os/$arch
+Server = http://mirror.anquan.cl/archlinux/$repo/os/$arch
+Server = http://archlinux.uk.mirror.allworldit.com/archlinux/$repo/os/$arch
+Server = http://ftp.halifax.rwth-aachen.de/archlinux/$repo/os/$arch
+Server = http://vpsmurah.jagoanhosting.com/archlinux/$repo/os/$arch
+Server = http://mirror.faizuladib.com/archlinux/$repo/os/$arch

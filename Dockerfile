@@ -1,4 +1,4 @@
-FROM archlinux:latest
+FROM nmahoney/archlinux:latest
 LABEL authors="Nick Mahoney <nick.mahoney00@gmail.com>"
 
 ################################################################################
