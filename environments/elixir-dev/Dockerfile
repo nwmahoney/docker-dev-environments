@@ -1,18 +1,10 @@
 FROM nmahoney/dev:latest
 LABEL authors="Nick Mahoney <nick.mahoney00@gmail.com>"
 
-
-################################################################################
-# root user
-
 # install packages (and upgrade existing packages)
-RUN pacman --noconfirm -Syu \
+RUN sudo pacman --noconfirm -Syu \
       erlang \
       elixir
-
-
-################################################################################
-# nick user
 
 USER nick
 WORKDIR /home/nick
