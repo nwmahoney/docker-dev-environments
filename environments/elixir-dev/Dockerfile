@@ -23,7 +23,7 @@ WORKDIR /home/nick
 # `.../nvim/plugin`. Or switch to actual Lua files and just append this instead
 # of using `sed`. Although Lua and seperate file would probably be the
 # cleanest.
-RUN sed -i 's/^EOF$/nvim_lsp.elixirls.setup{\n  cmd = { "/home/nick/.local/bin/elixir-ls" };\n  on_attach = on_attach,\n  capabilities = capabilities,\n}\n\nEOF/' \
+RUN sed -i 's/^EOF$/nvim_lsp.elixirls.setup{\n  cmd = { "\/home\/nick\/.local\/bin\/elixir-ls" };\n  on_attach = on_attach,\n  capabilities = capabilities,\n}\n\nEOF/' \
       /home/nick/.config/nvim/plugin/lsp.vim
 
 CMD ["zsh"]
