@@ -33,7 +33,8 @@ RUN pacman --noconfirm -Syu \
       bat \
       git-delta \
       firefox \
-      stow
+      stow \
+      unzip
 
 # sync the pkgfile database
 RUN pkgfile --update
@@ -79,7 +80,7 @@ COPY --chown=nick dotfiles/home/vim/templates/skeleton.sh \
 COPY --chown=nick .dotfiles /home/nick/.dotfiles
 RUN cd ~/.dotfiles && stow nvim
 
-# Setup LSP
+# Setup Typescript/Javascript LSP.
 RUN source /home/nick/.zshenv && npm install -g typescript typescript-language-server
 
 RUN nvim --headless +'PlugInstall --sync' +qa
