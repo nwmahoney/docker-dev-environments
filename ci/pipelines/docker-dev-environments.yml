@@ -29,6 +29,14 @@ resources:
     username: nmahoney
     password: ((docker-password))
 
+- name: elixir-dev-image
+  type: registry-image
+  source:
+    repository: nmahoney/elixir-dev
+    tag: latest
+    username: nmahoney
+    password: ((docker-password))
+
 jobs:
 - name: build-and-push-archlinux-image
   plan:
@@ -54,7 +62,7 @@ jobs:
           repository: concourse/oci-build-task
 
       params:
-        CONTEXT: images/archlinux
+        CONTEXT: environments/archlinux
 
       inputs:
       - name: git-repo
@@ -93,6 +101,9 @@ jobs:
         source:
           repository: concourse/oci-build-task
 
+      params:
+        CONTEXT: environments/dev
+
       inputs:
       - name: git-repo
         path: .
@@ -104,5 +115,45 @@ jobs:
         path: build
 
   - put: dev-image
+    params:
+      image: image/image.tar
+
+- name: build-and-push-elixir-dev-image
+  plan:
+  - in_parallel:
+    - get: git-repo
+      trigger: true
+
+    - get: dev-image
+      trigger: true
+      params:
+        skip_download: true
+
+  # note: this task config could be pushed into `my-image-src` and loaded using
+  # `file:` instead
+  - task: build-dev-image
+    privileged: true
+    config:
+      platform: linux
+
+      image_resource:
+        type: registry-image
+        source:
+          repository: concourse/oci-build-task
+
+      params:
+        CONTEXT: environments/elixir-dev
+
+      inputs:
+      - name: git-repo
+        path: .
+
+      outputs:
+      - name: image
+
+      run:
+        path: build
+
+  - put: elixir-dev-image
     params:
       image: image/image.tar
